@@ -27,7 +27,6 @@ function init() {
     { id: '13-1', path: './image/torannpu-13.png', status: false },
     { id: '13-2', path: './image/torannpu-13.png', status: false },
   ];
-
   shuffleData = data.sort(() => Math.random() - 0.5);
   console.log(shuffleData);
   const gameBoard = document.getElementsByClassName('cards');
@@ -44,6 +43,7 @@ function init() {
 }
 init();
 let players = true;
+let leftCards = shuffleData.length;
 const playersName = document.getElementById('playersName');
 
 if (players) {
@@ -60,7 +60,7 @@ Array.prototype.forEach.call(card, function (ele, index) {
     ele.addEventListener(
       'click',
       function () {
-        if (players == true) {
+        if (players == true && !ele.classList.contains('open')) {
           click(ele);
         }
       },
@@ -70,14 +70,13 @@ Array.prototype.forEach.call(card, function (ele, index) {
 });
 let history = [];
 function click(ele) {
-  console.log(ele.id);
   ele.classList.add('open');
-
   cnt++;
   //   id記録
   history.push(ele.id);
 
   //一枚目：1枚目のIDを記録
+  // 二枚目：判定に入る
   if (cnt == 2) {
     hantei(ele.id);
   }
@@ -90,12 +89,14 @@ function hantei(id) {
     } else {
       score[1]++;
     }
-
+    leftCards -= 2;
     cnt = 0;
-    console.log('得点', score);
+    console.log('得点', score, leftCards);
     document.getElementById('score').textContent = 'プレイヤー：' + score[0] + '　AI：' + score[1];
-    // over?
-
+    // game clear
+    if (leftCards === 0) {
+      setTimeout(() => (document.getElementById('clear').style.display = 'flex'), 2 * 1000);
+    }
     // aiのターン　継続
     if (players == false) {
       setTimeout(() => aiAction(), 2.5 * 1000);
@@ -115,9 +116,8 @@ function hantei(id) {
       setTimeout(() => (playersName.src = 'image/icon-p.png'), 2 * 1000);
     }
   }
-  console.log(cnt);
 }
-// ai動き設定
+// ai動き設定 レベル：幼児
 function aiAction() {
   console.log('players : AI');
   //   適当に一枚をopen

@@ -104,11 +104,21 @@ h1 {
   background-image: url(./image/torannpu-1.png);
 }
 
-.clear {
+#clear {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+#clear img {
+  /* opacity: 1; */
+  width: 80%;
+  height: auto;
 }
 footer {
   height: 80px;
